@@ -3,15 +3,15 @@
   "version": "0.0.1",
   "description": "用于uniapp打包时插入代码片段的loader",
   "main": "src/index.js",
-  "homepage": "http://gitlab.wangxiaobao.com/npm/eslint-config",
+  "homepage": "http://gitlab.wangxiaobao.com/npm/wxb-uniapp-inset-loader",
   "publishConfig": {
-    "registry": "http://nexus3.wangxiaobao.com/repository/wxb-uniapp-inset-loader/"
+    "registry": "http://nexus3.wangxiaobao.com/repository/wxp-private/"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "http://gitlab.wangxiaobao.com/npm/wxb-uniapp-inset-loader"
   },
-  "author": "liusheng",
+  "author": "wxb",
   "license": "ISC",
   "dependencies": {
     "vue-template-compiler": "^2.6.10",
