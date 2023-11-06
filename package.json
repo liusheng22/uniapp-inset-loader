@@ -1,0 +1,20 @@
+{
+  "name": "wxb-uniapp-inset-loader",
+  "version": "0.0.1",
+  "description": "用于uniapp打包时插入代码片段的loader",
+  "main": "src/index.js",
+  "homepage": "http://gitlab.wangxiaobao.com/npm/eslint-config",
+  "publishConfig": {
+    "registry": "http://nexus3.wangxiaobao.com/repository/wxb-uniapp-inset-loader/"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "liusheng",
+  "license": "ISC",
+  "dependencies": {
+    "vue-template-compiler": "^2.6.10",
+    "strip-json-comments": "^2.0.1"
+  }
+}
