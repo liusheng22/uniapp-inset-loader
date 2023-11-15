@@ -26,8 +26,8 @@ const generateLabelCode = (labelArr) => labelArr.map(e => insetLoader.config[e] 
 // 根据compiler组合成style标签字符串代码
 const generateStyleCode = (styles) => styles.reduce((str, item) => {
   return str +=  `<style ${item.lang ? (`lang='${  item.lang  }'`) : ''} ${item.scoped ? (`scoped='${  item.scoped  }'`) : ''}>
-  ${item.content}
- </style>`
+    ${item.content}
+  </style>`
 }, '')
 
 // 分析pages.json，生成路由和配置的映射对象
@@ -70,11 +70,11 @@ const initPages = (that) => {
     rootPath = path.resolve(pagesPath, '../')
   }
   pagesJson = JSON.parse(stripJsonComments(fs.readFileSync(pagesPath, 'utf8')))
-  return initInsetLoader()
+  return initInsetLoader(that)
 }
 
 // 给非必填项设置缺省值，缺少主要对象返回false
-const initInsetLoader = () => {
+const initInsetLoader = (that) => {
   insetLoader = pagesJson.insetLoader || {}
   // label：全局标签配置
   // rootEle：根元素的类型,也支持正则,如匹配任意标签.*
@@ -83,6 +83,10 @@ const initInsetLoader = () => {
 
   // config对象为空视为无效配置
   const effective = typeof insetLoader.config == 'object' && Object.keys(insetLoader.config).length
+  const { wxbCollectLogs } = that.query || {}
+  if (wxbCollectLogs) {
+    return true
+  }
   return effective
 }
 

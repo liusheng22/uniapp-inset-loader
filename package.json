@@ -1,6 +1,6 @@
 {
   "name": "wxb-uniapp-inset-loader",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "用于uniapp打包时插入代码片段的loader",
   "author": "wxb",
   "license": "ISC",
@@ -9,11 +9,12 @@
     "type": "git",
     "url": "http://gitlab.wangxiaobao.com/npm/wxb-uniapp-inset-loader"
   },
-  "main": "src/index.js",
+  "main": "index.js",
   "publishConfig": {
     "registry": "http://nexus3.wangxiaobao.com/repository/wxp-private/"
   },
   "dependencies": {
+    "@dcloudio/vue-cli-plugin-uni": "2.0.2-3090620231104001",
     "strip-json-comments": "^2.0.1",
     "vue-template-compiler": "^2.6.10"
   },
