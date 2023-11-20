@@ -36,7 +36,7 @@ module.exports = function(content) {
     const compiler = parseComponent(content)
     const { wxbCollectLogs } = this.query || {}
     if (wxbCollectLogs) {
-      content = insetCollectLogsSnippets(compiler, content)
+      content = insetCollectLogsSnippets(compiler, content, this.query)
     } else {
       // 生成标签代码
       const labelCode = generateLabelCode(curPage.label)

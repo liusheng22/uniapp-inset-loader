@@ -1,8 +1,9 @@
-const { methods, mounted, reportScript, methodsTemplate, mountedTemplate, reportScriptTemplate } = require('../snippet/script.js')
-const { renderjsTemplate } = require('../snippet/render.js')
+const { logsMethods, logsMounted, compilerScript, logsMethodsTemplate, logsMountedTemplate, compilerScriptTemplate } = require('../snippet/script.js')
+const { renderScriptTemplate } = require('../snippet/render.js')
 const { generateStyleCode } = require('./index')
 
-const insetCollectLogsSnippets = (compiler, content) => {
+const insetCollectLogsSnippets = (compiler, content, query) => {
+  const { titleSelector } = query || {}
   const { customBlocks, script } = compiler || {}
   if (customBlocks && customBlocks.length) {
     const rewriteBlocks = []
@@ -13,7 +14,6 @@ const insetCollectLogsSnippets = (compiler, content) => {
         rewriteBlocks.push(customBlock)
         return
       }
-      // type: 'script'
       if (customBlock.type !== 'script') {
         rewriteBlocks.push(customBlock)
         return
@@ -23,31 +23,24 @@ const insetCollectLogsSnippets = (compiler, content) => {
         return
       }
       let newContent = ''
-      // const defaultReg = new RegExp(/export\s*default\s*{/g)
       const defaultReg = new RegExp(/(export\s*default\s*{)/g)
       // 正则找到 `mounted() {` 字符串
       const mountedReg = new RegExp(/(mounted\s*\(\)\s*{)/g)
       // 判断是否已经存在mounted方法
       if (mountedReg.test(customContent)) {
-        // 在该字符串之后插入我们的代码
-        // newContent = customContent.replace(mountedReg, `mounted() {${mounted}`)
-        newContent = customContent.replace(mountedReg, `$1 ${mounted}`)
+        newContent = customContent.replace(mountedReg, `$1 ${logsMounted}`)
       } else {
-        // 在该字符串之后插入我们的代码
-        // newContent = customContent.replace(defaultReg, `export default {${mountedTemplate}`)
-        newContent = customContent.replace(defaultReg, `$1 ${mountedTemplate}`)
+        newContent = customContent.replace(defaultReg, `$1 ${logsMountedTemplate}`)
       }
       // 正则找到 `methods: {/` 字符串
       const methodsReg = new RegExp(/(methods\s*:\s*{)/g)
       // 判断是否已经存在methods方法
       if (methodsReg.test(customContent)) {
         // 在该字符串之后插入我们的代码
-        // newContent = newContent.replace(methodsReg, `methods:{${methods}`)
-        newContent = newContent.replace(methodsReg, `$1 ${methods}`)
+        newContent = newContent.replace(methodsReg, `$1 ${logsMethods(titleSelector)}`)
       } else {
         // 在该字符串之后插入我们的代码
-        // newContent = newContent.replace(defaultReg, `export default {${methodsTemplate}`)
-        newContent = newContent.replace(defaultReg, `$1 ${methodsTemplate}`)
+        newContent = newContent.replace(defaultReg, `$1 ${logsMethodsTemplate(titleSelector)}`)
       }
 
       // script 中的 methods: { 插入代码
@@ -55,12 +48,10 @@ const insetCollectLogsSnippets = (compiler, content) => {
       // 判断是否已经存在methods方法
       if (scriptReg.test(script.content)) {
         // 在该字符串之后插入我们的代码
-        // compiler.script.content = script.content.replace(scriptReg, `methods: {${reportScript}`)
-        compiler.script.content = script.content.replace(scriptReg, `$1 ${reportScript}`)
+        compiler.script.content = script.content.replace(scriptReg, `$1 ${compilerScript}`)
       } else {
         // 在该字符串之后插入我们的代码
-        // compiler.script.content = script.content.replace(defaultReg, `export default {${reportScriptTemplate}`)
-        compiler.script.content = script.content.replace(defaultReg, `$1 ${reportScriptTemplate}`)
+        compiler.script.content = script.content.replace(defaultReg, `$1 ${compilerScriptTemplate}`)
       }
 
       rewriteBlocks.push({
@@ -95,7 +86,7 @@ const insetCollectLogsSnippets = (compiler, content) => {
       <script>
         ${compiler.script.content}
       </script>
-      ${renderjsTemplate}
+      ${renderScriptTemplate(titleSelector)}
       ${generateStyleCode(compiler.styles || [])}
     `
   }
