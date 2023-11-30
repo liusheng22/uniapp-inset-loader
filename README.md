@@ -1,10 +1,10 @@
 
-# wxb-uniapp-inset-loader
+# uniapp-inset-loader
 #### 编译阶段在sfc模板指定位置插入自定义内容，适用于webpack构建的vue应用，常用于小程序需要全局引入组件的场景。（由于小程序没有开放根标签，没有办法在根标签下追加全局标签，所以要使用组件必须在当前页面引入组件标签）
 
 ### 第一步 安装
 ```bash
-npm install wxb-uniapp-inset-loader --save-dev
+npm install uniapp-inset-loader --save-dev
 ```
 
 ### 第二步 vue.config.js注入loader
@@ -18,7 +18,7 @@ module.exports = {
         {
           test: /\.vue$/,
           use: {
-            loader: path.resolve(__dirname, '../node_modules/wxb-uniapp-inset-loader/src/index.js'),
+            loader: path.resolve(__dirname, '../node_modules/uniapp-inset-loader/src/index.js'),
             options: {
               // 根据自己项目需要配置的平台进行填写，比如 ['app-plus','mp-weixin']
               VUE_APP_PLATFORMS: ['app-plus']
@@ -41,12 +41,12 @@ options: {
 ```json
 // pages.json file
 "insetLoader": {
-  "config":{
+  "config": {
     "componentName": "<custom-global-component></custom-global-component>",
   },
   // 全局配置
-  "label":["componentName"],
-  "rootEle":"div"
+  "label": ["componentName"],
+  "rootEle": "div"
 },
 "pages": [
   {

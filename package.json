@@ -1,25 +1,31 @@
 {
-  "name": "wxb-uniapp-inset-loader",
-  "version": "0.0.7",
+  "name": "uniapp-inject-loader",
+  "version": "1.0.0",
   "description": "用于uniapp打包时插入代码片段的loader",
-  "author": "wxb",
+  "author": "liusheng",
   "license": "ISC",
-  "homepage": "http://gitlab.wangxiaobao.com/npm/wxb-uniapp-inset-loader",
+  "homepage": "https://github.com/liusheng22/uniapp-inject-loader",
   "repository": {
     "type": "git",
-    "url": "http://gitlab.wangxiaobao.com/npm/wxb-uniapp-inset-loader"
+    "url": "https://github.com/liusheng22/uniapp-inject-loader"
   },
   "main": "index.js",
   "publishConfig": {
-    "registry": "http://nexus3.wangxiaobao.com/repository/wxp-private/"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@dcloudio/vue-cli-plugin-uni": "2.0.2-3090620231104001",
+    "@vue/compiler-sfc": "^3.3.11",
+    "deepmerge": "^4.3.1",
+    "esprima": "^4.0.1",
+    "merge-source-map": "^1.1.0",
+    "serialize-javascript": "^6.0.1",
     "strip-json-comments": "^2.0.1",
     "vue-template-compiler": "^2.6.10"
   },
   "devDependencies": {
-    "eslint": "^8.53.0",
-    "eslint-config-wxb-basic": "0.0.18"
+    "@sujian/eslint-config": "^1.0.4",
+    "eslint": "^8.54.0"
   }
 }
