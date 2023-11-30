@@ -60,11 +60,15 @@ const insetCollectLogsSnippets = (compiler, content, query) => {
       })
     })
 
-    const customTemplate = rewriteBlocks.reduce((str, item) => {
-      return str += `<script ${item.attrs.module ? (`module='${item.attrs.module}'`) : ''} ${item.attrs.lang ? (`lang='${item.attrs.lang}'`) : ''}>
-      ${item.content}
+    const customTemplate = rewriteBlocks.map((item) => {
+      const { content, attrs } = item || {}
+      const { module, lang } = attrs || {}
+      const moduleStr = module ? (`module='${module}'`) : ''
+      const langStr = lang ? (`lang='${lang}'`) : ''
+      return `<script ${moduleStr} ${langStr}>
+        ${content}
       </script>`
-    })
+    }).join('\n')
 
     // 重新赋值
     content = `
@@ -75,7 +79,6 @@ const insetCollectLogsSnippets = (compiler, content, query) => {
         ${compiler.script.content}
       </script>
       ${customTemplate}
-      </script>
       ${generateStyleCode(compiler.styles || [])}
     `
   } else {

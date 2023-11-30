@@ -1,6 +1,6 @@
 {
   "name": "wxb-uniapp-inset-loader",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "用于uniapp打包时插入代码片段的loader",
   "author": "wxb",
   "license": "ISC",
