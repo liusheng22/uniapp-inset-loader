@@ -6,7 +6,7 @@ const { toCamelCase } = require('./format')
 // 反序列化后的pages.json对象
 let pagesJson = {}
 // 此loader配置对象
-let insetLoader = {}
+let injectLoader = {}
 // pages.json文件所在目录
 let rootPath = process.env.UNI_INPUT_DIR || `${process.env.INIT_CWD}\\src`
 
@@ -22,8 +22,6 @@ const generateHtmlCode = (template, labelCode, regLabel) => {
 }
 
 // 获取到需要插入的所有label标签
-// const generateLabelCode = (labelArr) => labelArr.map(e => insetLoader.config[e] || '').join('')
-
 const generateLabelCode = (labelArr) => {
   let labelCode = ''
   labelArr.forEach((label) => {
@@ -48,12 +46,11 @@ const generateStyleCode = (styles) =>
 const getPagesMap = () => {
   // 获取主包路由配置
   const pages = pagesJson.pages || []
-  // console.log("🚀 ~ file: index.js:47 ~ getPagesMap ~ pages:", pages)
   const subpackages = pagesJson.subpackages || pagesJson.subPackages || []
   return pages.reduce(
     (obj, item) => {
       const curPage = getLabelConfig(item)
-      curPage.isInset && (obj[`/${item.path}`] = curPage)
+      curPage.isInject && (obj[`/${item.path}`] = curPage)
       return obj
     },
     subpackages.reduce((obj, item) => {
@@ -61,7 +58,7 @@ const getPagesMap = () => {
       const root = item.root
       item.pages.forEach((item) => {
         const curPage = getLabelConfig(item)
-        curPage.isInset && (obj[`/${root}/${item.path}`] = curPage)
+        curPage.isInject && (obj[`/${root}/${item.path}`] = curPage)
       })
       return obj
     }, {})
@@ -70,15 +67,19 @@ const getPagesMap = () => {
 
 // 生成path对应的对象结构
 const getLabelConfig = (json) => {
-  const isCurrInset =
-    json.style && (json.style.insetLabel || json.style.insetCode)
-  const isInset =
-    isCurrInset || insetLoader.insetLabel.length || insetLoader.insetCode.length
+  const isCurrInsert =
+    json.style && (json.style.injectLabel || json.style.injectCode)
+  const isInject =
+    isCurrInsert ||
+    injectLoader.injectLabel.length ||
+    injectLoader.injectCode.length
   return {
-    isInset,
-    insetLabel: (json.style && json.style.insetLabel) || insetLoader.insetLabel,
-    insetCode: (json.style && json.style.insetCode) || insetLoader.insetCode,
-    ele: (json.style && json.style.rootEle) || insetLoader.rootEle
+    isInject,
+    injectLabel:
+      (json.style && json.style.injectLabel) || injectLoader.injectLabel,
+    injectCode:
+      (json.style && json.style.injectCode) || injectLoader.injectCode,
+    ele: (json.style && json.style.rootEle) || injectLoader.rootEle
   }
 }
 
@@ -94,21 +95,21 @@ const initPages = (that) => {
     rootPath = path.resolve(pagesPath, '../')
   }
   pagesJson = JSON.parse(stripJsonComments(fs.readFileSync(pagesPath, 'utf8')))
-  return initInsetLoader()
+  return initInjectLoader()
 }
 
 // 给非必填项设置缺省值，缺少主要对象返回false
-const initInsetLoader = () => {
-  insetLoader = pagesJson.insetLoader || {}
+const initInjectLoader = () => {
+  injectLoader = pagesJson.injectLoader || {}
   // label：全局标签配置
   // rootEle：根元素的类型,也支持正则,如匹配任意标签.*
-  insetLoader.insetLabel = insetLoader.insetLabel || []
-  insetLoader.insetCode = insetLoader.insetCode || []
-  insetLoader.rootEle = insetLoader.rootEle || 'view'
-  // const { insetLabel, insetCode } = insetLoader
+  injectLoader.injectLabel = injectLoader.injectLabel || []
+  injectLoader.injectCode = injectLoader.injectCode || []
+  injectLoader.rootEle = injectLoader.rootEle || 'view'
+  // const { injectLabel, injectCode } = injectLoader
 
   // 无配置则不予处理
-  // const effective = insetCode.length || insetLabel.length
+  // const effective = injectCode.length || injectLabel.length
   // return effective
   return true
 }
@@ -121,7 +122,7 @@ module.exports = {
   generateHtmlCode,
   generateLabelCode,
   generateStyleCode,
-  initInsetLoader,
+  initInjectLoader,
   getPagesMap,
   initPages,
   getRoute
