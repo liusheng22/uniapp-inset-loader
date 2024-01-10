@@ -15,6 +15,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@babel/generator": "^7.23.6",
+    "@babel/parser": "^7.23.6",
+    "@babel/traverse": "^7.23.7",
+    "@babel/types": "^7.23.6",
     "@dcloudio/vue-cli-plugin-uni": "2.0.2-3090620231104001",
     "@vue/compiler-sfc": "^3.3.11",
     "deepmerge": "^4.3.1",
