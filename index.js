@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const vueCompilerSfc = require('@vue/compiler-sfc')
-const { compile, parseComponent } = require('vue-template-compiler')
+const { parseComponent } = require('vue-template-compiler')
 const {
   generateHtmlCode,
   generateLabelCode,
@@ -10,7 +9,7 @@ const {
   initPages,
   getRoute
 } = require('./utils')
-const insetCodeModuleSnippets = require('./utils/inset')
+const injectCodeModuleSnippets = require('./utils/inject')
 
 // 是否初始化过
 let _init = false
@@ -37,38 +36,38 @@ module.exports = function (content) {
   if (curPage) {
     // 解析sfc
     let compiler = parseComponent(content)
-    console.log('🚀 ~ file: index.js:40 ~ compiler:', compiler)
+    const { injectCode, injectLabel } = curPage || {}
+    const isPageHasInjectCode = injectCode && injectCode.length
+    const isPageHasInjectLabel = injectLabel && injectLabel.length
 
     // 插入代码
-    if (curPage.insetCode.length) {
-      for (const module of curPage.insetCode) {
+    if (isPageHasInjectCode) {
+      for (const module of injectCode) {
+        // TODO MOCK
         // 获取公共组件路径
         const modulePath = path.resolve(
           __dirname,
           `src/components/${module}/${module}.vue`
         )
-        const moduleContent = fs.readFileSync(modulePath, 'utf8')
+        const injectContent = fs.readFileSync(modulePath, 'utf8')
         // 解析sfc - 最终插入到页面的代码
-        const insetCompiler = parseComponent(moduleContent)
+        const injectCompiler = parseComponent(injectContent)
 
-        // 将 insetCompiler 和 compiler 进行合并
-        const result = insetCodeModuleSnippets(
-          compiler,
-          content,
-          insetCompiler,
+        // 将 injectCompiler 和 compiler 进行合并
+        const result = injectCodeModuleSnippets({
+          sourceCompiler: compiler,
+          injectCompiler,
           curPage
-        )
+        })
         content = result.content
         compiler = result.compiler
       }
     }
-    // console.log('🚀 ~ file: index.js:57 ~ content:', content)
 
     // 插入标签
-    if (curPage.insetLabel.length) {
+    if (isPageHasInjectLabel) {
       // 生成标签代码
-      // const labelCode = generateLabelCode(curPage.label)
-      const labelCode = generateLabelCode(curPage.insetLabel || [])
+      const labelCode = generateLabelCode(injectLabel || [])
       // 匹配标签位置
       // eslint-disable-next-line no-useless-escape
       const insertReg = new RegExp(`(<\/${curPage.ele}>$)`)
