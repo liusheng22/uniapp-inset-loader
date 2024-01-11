@@ -96,3 +96,8 @@ options: {
 ### tips
 - 优先推荐使用 `injectLabel` 配置，因为这种方式不会导致代码冲突，对原有业务代码的侵入性最小
 - 如果使用 `injectCode` 配置，建议仅使用简易便于维护的组件，过于复杂的生命周期、数据处理、函数等注入到页面后可能会导致代码冲突，不利于维护
+
+### 说明
+> 根据该[参考项目](https://github.com/1977474741/vue-inset-loader)进行开发，想法很棒的一位作者大大~
+
+> 该项目我已重构，代码仓库迁移至[uniapp-inject-loader](https://github.com/liusheng22/uniapp-inject-loader)
